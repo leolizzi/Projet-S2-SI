@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
+from math import atan, pi
+
 #Ordre des sujets du premier membre du groupe
 l1 = [1,2,3,4,5,6,7,8,9,10]
 #Ordre des sujets du second membre du groupe
@@ -27,16 +29,30 @@ project = {1:'Boite aux lettres',
            19:'Tracker GPS'
         }
 
-def coef(l1, l2):
+def coefList(l1, l2):
+    
+    """
+    Affecte un coefficient à chaque sujet selon son classement dans la liste
+    
+    Return une liste de tuple (numeroSujet, sonCoef)
+    """
+    
     l3 = []
     l4 = []
     
+    #Nombre de sujets
+    n = len(project)
+    c = 0.5
+    
+    def importance(i):
+        return pi / 2 - atan(c * (i - n/2))
+    
     #On affecte des coefs en fonction de la position dans la liste
     for i in range(len(l1)):
-        t1 = (l1[i], 1 / (i+1))
+        t1 = (l1[i], importance(i))
         l3.append(t1)
     for j in range(len(l2)):
-        t2 = (l2[j], 1 / (j+1))
+        t2 = (l2[j], importance(j))
         l4.append(t2)
         
     d = {}
@@ -49,46 +65,35 @@ def coef(l1, l2):
         d[j[0]] += j[1]
     
     #Liste de tuples de la forme [(numéro 1, coef 1), ..., (numéro n, coef n)]       
-    return d.items()
+    return list(d.items())
 
-def getKey(item):
+l = coefList(l1, l2)
+
+def sortedList(l):
     
-    return item[1]
+    """
+    Trie la liste dans l'ordre des coefficients décroissants
+    et ne garde que les 10 premiers tuples
+    """
+    
+    def getKey(item): 
+        return item[1]
+    
+    return sorted(l, key=getKey, reverse=True)[:10]
 
-lf = []
-#On trie la liste dans l'ordre des coefs décroissants et garde les 10 premiers
-lf = sorted(coef(l1, l2), key=getKey, reverse=True)[:10]
+#La liste triée par coef
+l = sortedList(l)
 
 
 #Affichage
-for i in range(len(lf)):
-    projectNumber = lf[i][0]
+for i in range(len(l)): 
+    projectName = project[l[i][0]]
+    weight = l[i][1]
     
-    if (i+1)/10 < 1:
-        if len(project[projectNumber]) < 13:
-            print('{}  : {}\t\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]))
-        else:
-            print('{}  : {}\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]))       
+    if len(projectName) < 10:
+        print('{:>2} : {} \t\t({:.3f})'.format(i+1, projectName, weight))
     else:
-        if len(project[projectNumber]) < 13:
-            print('{} : {}\t\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]))
-        else:
-            print('{} : {}\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]))
+        print('{:>2} : {} \t({:.3f})'.format(i+1, projectName, weight))
 
-#with open('res.txt', 'w') as g:  
-#     
-#    for i in range(len(lf)):
-#        projectNumber = lf[i][0]
-#        
-#        if (i+1)/10 < 1:
-#            if len(project[projectNumber]) < 15:
-#                print('{}  : {}\t\t\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]), file=g)
-#            else:
-#                print('{}  : {}\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]), file=g)       
-#        else:
-#            if len(project[projectNumber]) < 13:
-#                print('{} : {}\t\t\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]), file=g)
-#            else:
-#                print('{} : {}\t\t({:.3f})'.format(i+1, project[projectNumber], lf[i][1]), file=g)
 
         
