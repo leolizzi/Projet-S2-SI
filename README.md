@@ -7,4 +7,6 @@ Les sujets ont des importances de moins en moins fortes selon leur classement en
 
 f(x) = pi/2 - arctan(0,5 * (x - n/2)), n étant le nombre de sujets.
 
+![fonction_importance](fonction_importance.png)
+
 (graphe de la courbe dans les fichiers)
