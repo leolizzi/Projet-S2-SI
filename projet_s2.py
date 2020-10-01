@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/env python
-
 from math import atan, pi
-
-#Ordre des sujets du premier membre du groupe
-l1 = [1,2,3,4,5,6,7,8,9,10]
-#Ordre des sujets du second membre du groupe
-l2 = [2,11,12,13,14,15,16,17,18,19]
+import matplotlib.pyplot as plt
 
 project = {1:'Boite aux lettres',
            2:'Miroir connecté',
@@ -29,6 +22,11 @@ project = {1:'Boite aux lettres',
            19:'Tracker GPS'
         }
 
+#Ordre des sujets du premier membre du groupe
+l1 = [1,2,3,4,5,6,7,8,9,10]
+#Ordre des sujets du second membre du groupe
+l2 = [2,11,12,13,14,15,16,17,18,19]
+
 def coefList(l1, l2):
     
     """
@@ -40,10 +38,10 @@ def coefList(l1, l2):
     l3 = []
     l4 = []
     
-    #Nombre de sujets
-    n = len(project)
-    c = 0.5
-    
+    #Paramètres de la fonction
+    n = len(l1) #Nombre de sujets
+    c = .7
+
     def importance(i):
         return pi / 2 - atan(c * (i - n/2))
     
@@ -81,19 +79,28 @@ def sortedList(l):
     
     return sorted(l, key=getKey, reverse=True)[:10]
 
-#La liste triée par coef
-l = sortedList(l)
+####################### DEBUT DU PROGRAMME #################################
 
+try: 
+    assert len(l1) == len(l2) == 10
+    #La liste triée par coef
+    l = sortedList(l)
 
-#Affichage
-for i in range(len(l)): 
-    projectName = project[l[i][0]]
-    weight = l[i][1]
-    
-    if len(projectName) < 10:
-        print('{:>2} : {} \t\t({:.3f})'.format(i+1, projectName, weight))
-    else:
-        print('{:>2} : {} \t({:.3f})'.format(i+1, projectName, weight))
+    #Affichage du diagramme en barre
+    names = [project[l[i][0]] for i in range (len(l))]
+    values = [l[i][1] for i in range (len(l))]
+    plt.bar(names, values) ; plt.show()
 
-
+    #Affichage console
+    for i in range(len(l)): 
+        projectName = project[l[i][0]]
+        weight = l[i][1]
         
+        if len(projectName) < 10:
+            print('{:>2} : {} \t\t({:.3f})'.format(i+1, projectName, weight))
+        else:
+            print('{:>2} : {} \t({:.3f})'.format(i+1, projectName, weight))
+
+except AssertionError:
+    print("Les deux listes doivent comporter le même nombre de sujets !")
+
