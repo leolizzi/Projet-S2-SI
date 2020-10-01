@@ -5,8 +5,6 @@ Ce programme permet à 2 personnes ayant classé 10 sujets par ordre de préfér
 
 Les sujets ont des importances de moins en moins fortes selon leur classement en suivant la loi donnée par la fonction suivante :
 
-f(x) = pi/2 - arctan(0,5 * (x - n/2)), n étant le nombre de sujets.
-
-![fonction_importance](fonction_importance.png)
+f(x) = pi/2 - arctan(0,5 * (x - n/2)), n étant le nombre de sujets classés par les personnes.
 
 (graphe de la courbe dans les fichiers)
